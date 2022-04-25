@@ -27,4 +27,11 @@ function loginUser(email, password) {
   return token;
 }
 
-export { registerUser, loginUser };
+async function getTerms(token) {
+  const config = createConfig(token);
+
+  const terms = await axios.get(`${BASE_URL}/terms`, config);
+  return terms;
+}
+
+export { registerUser, loginUser, getTerms };
