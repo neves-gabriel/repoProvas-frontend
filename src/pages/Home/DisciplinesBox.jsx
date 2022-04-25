@@ -1,18 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router";
 import {
   Flex,
-  Heading,
-  Input,
-  Button,
-  InputGroup,
-  Stack,
-  InputLeftElement,
-  chakra,
   Box,
-  Link,
-  FormControl,
-  InputRightElement,
   Accordion,
   AccordionItem,
   AccordionPanel,
@@ -34,10 +23,8 @@ export default function DisciplinesBox() {
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      console.log(error);
       alert("Erro, recarregue a página em alguns segundos");
     }
-    console.log(termsData);
   }
 
   useEffect(() => {
