@@ -8,18 +8,21 @@ import {
   AccordionButton,
   AccordionIcon,
 } from "@chakra-ui/react";
-import { getTerms } from "../../services/api";
+import { getCategories, getTerms } from "../../services/api";
 import useAuth from "../../hooks/useAuth";
 
 export default function DisciplinesBox() {
   const [termsData, setTermsData] = useState(null);
+  const [categoriesData, setCategoriesData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const { auth } = useAuth();
 
   async function loadPage() {
     try {
-      const { data } = await getTerms(auth.token);
-      setTermsData(data);
+      const { data: termData } = await getTerms(auth.token);
+      setTermsData(termData);
+      const { data: categoryData } = await getCategories(auth.token);
+      setCategoriesData(categoryData.categories);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -31,7 +34,7 @@ export default function DisciplinesBox() {
     loadPage();
   }, [auth]);
 
-  if (isLoading || termsData === null) {
+  if (isLoading || termsData === null || categoriesData === null) {
     return <h2>Carregando...</h2>;
   }
 
@@ -49,7 +52,7 @@ export default function DisciplinesBox() {
             <AccordionItem>
               <h2>
                 <AccordionButton>
-                  <Box flex="1" textAlign="left">
+                  <Box flex="1" textAlign="left" key={term.id}>
                     {term.id}° Período
                   </Box>
                   <AccordionIcon />
@@ -60,7 +63,7 @@ export default function DisciplinesBox() {
                   <AccordionItem>
                     <h2>
                       <AccordionButton>
-                        <Box flex="1" textAlign="left">
+                        <Box flex="1" textAlign="left" key={discipline.id}>
                           {discipline.name}
                         </Box>
                         <AccordionIcon />
@@ -68,13 +71,23 @@ export default function DisciplinesBox() {
                     </h2>
                     {discipline.teachersDisciplines.map(
                       (teachersDiscipline) => (
-                        <AccordionPanel pb={4}>
-                          {teachersDiscipline.tests.map((test) => (
-                            <div cursor="pointer">
-                              <p>{test.name}</p>
-                              <p style={{ color: "#838383" }}>
-                                {teachersDiscipline.teacher.name}
-                              </p>
+                        <AccordionPanel pb={4} key={teachersDiscipline.id}>
+                          {categoriesData.map((category) => (
+                            <div key={category.id}>
+                              <p>{category.name}</p>
+                              {teachersDiscipline.tests.map((test) =>
+                                category.id === test.category.id ? (
+                                  <p
+                                    style={{
+                                      color: "#838383",
+                                      cursor: "pointer",
+                                    }}
+                                  >
+                                    {test.name} (
+                                    {teachersDiscipline.teacher.name})
+                                  </p>
+                                ) : null
+                              )}
                             </div>
                           ))}
                         </AccordionPanel>

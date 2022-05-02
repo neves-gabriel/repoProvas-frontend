@@ -41,4 +41,11 @@ async function getTeachers(token) {
   return terms;
 }
 
-export { registerUser, loginUser, getTerms, getTeachers };
+async function getCategories(token) {
+  const config = createConfig(token);
+
+  const categories = await axios.get(`${BASE_URL}/categories`, config);
+  return categories;
+}
+
+export { registerUser, loginUser, getTerms, getTeachers, getCategories };
