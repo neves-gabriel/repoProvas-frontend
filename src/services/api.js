@@ -48,4 +48,17 @@ async function getCategories(token) {
   return categories;
 }
 
-export { registerUser, loginUser, getTerms, getTeachers, getCategories };
+async function updateViewCountTest(token, id) {
+  const config = createConfig(token);
+
+  axios.put(`${BASE_URL}/test/${id}`, config);
+}
+
+export {
+  registerUser,
+  loginUser,
+  getTerms,
+  getTeachers,
+  getCategories,
+  updateViewCountTest,
+};

@@ -1,30 +1,15 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router";
-import {
-  Flex,
-  Heading,
-  Input,
-  Button,
-  InputGroup,
-  Stack,
-  InputLeftElement,
-  chakra,
-  Box,
-  Link,
-  FormControl,
-  InputRightElement,
-  Accordion,
-  AccordionItem,
-  AccordionPanel,
-  AccordionButton,
-  AccordionIcon,
-} from "@chakra-ui/react";
 import Navbar from "../../components/Navbar";
 import DisciplinesBox from "./DisciplinesBox";
 import TeachersBox from "./TeachersBox";
+import useAuth from "../../hooks/useAuth";
+import { useNavigate } from "react-router";
 
 export default function Home() {
+  const { auth } = useAuth();
   let location = useLocation();
+  const navigate = useNavigate();
 
   let page;
 
@@ -33,6 +18,10 @@ export default function Home() {
   } else if (location.pathname.includes("teachers")) {
     page = "teachers";
   } else {
+    navigate("/");
+  }
+
+  if (!auth) {
     navigate("/");
   }
 

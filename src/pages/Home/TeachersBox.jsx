@@ -2,13 +2,18 @@ import React, { useState, useEffect } from "react";
 import {
   Flex,
   Box,
+  Link,
   Accordion,
   AccordionItem,
   AccordionPanel,
   AccordionButton,
   AccordionIcon,
 } from "@chakra-ui/react";
-import { getTeachers, getCategories } from "../../services/api";
+import {
+  getTeachers,
+  getCategories,
+  updateViewCountTest,
+} from "../../services/api";
 import useAuth from "../../hooks/useAuth";
 
 export default function TeachersBox() {
@@ -33,6 +38,10 @@ export default function TeachersBox() {
   useEffect(() => {
     loadPage();
   }, [auth]);
+
+  async function incrementViewCount(id) {
+    await updateViewCountTest(auth.token, id);
+  }
 
   if (isLoading || teachersData === null || categoriesData === null) {
     return <h2>Carregando...</h2>;
@@ -65,14 +74,21 @@ export default function TeachersBox() {
                       <p>{category.name}</p>
                       {teacherDiscipline.tests.map((test) =>
                         category.id === test.category.id ? (
-                          <p
+                          <Link
                             style={{
                               color: "#838383",
-                              cursor: "pointer",
+                              display: "flex",
+                              justifyContent: "space-between",
+                              textDecoration: "none",
                             }}
+                            href={test.pdfUrl}
+                            target="_blank"
+                            underline="none"
+                            onClick={() => incrementViewCount(test.id)}
                           >
-                            {test.name} ({teacherDiscipline.discipline.name})
-                          </p>
+                            {test.name} ({teacher.name})
+                            <span>{test.viewCount} visualizações</span>
+                          </Link>
                         ) : null
                       )}
                     </div>

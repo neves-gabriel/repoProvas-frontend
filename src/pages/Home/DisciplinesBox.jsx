@@ -2,13 +2,18 @@ import React, { useState, useEffect } from "react";
 import {
   Flex,
   Box,
+  Link,
   Accordion,
   AccordionItem,
   AccordionPanel,
   AccordionButton,
   AccordionIcon,
 } from "@chakra-ui/react";
-import { getCategories, getTerms } from "../../services/api";
+import {
+  getCategories,
+  getTerms,
+  updateViewCountTest,
+} from "../../services/api";
 import useAuth from "../../hooks/useAuth";
 
 export default function DisciplinesBox() {
@@ -36,6 +41,10 @@ export default function DisciplinesBox() {
 
   if (isLoading || termsData === null || categoriesData === null) {
     return <h2>Carregando...</h2>;
+  }
+
+  async function incrementViewCount(id) {
+    await updateViewCountTest(auth.token, id);
   }
 
   return (
@@ -77,15 +86,22 @@ export default function DisciplinesBox() {
                               <p>{category.name}</p>
                               {teachersDiscipline.tests.map((test) =>
                                 category.id === test.category.id ? (
-                                  <p
+                                  <Link
                                     style={{
                                       color: "#838383",
-                                      cursor: "pointer",
+                                      display: "flex",
+                                      justifyContent: "space-between",
+                                      textDecoration: "none",
                                     }}
+                                    href={test.pdfUrl}
+                                    target="_blank"
+                                    underline="none"
+                                    onClick={() => incrementViewCount(test.id)}
                                   >
                                     {test.name} (
                                     {teachersDiscipline.teacher.name})
-                                  </p>
+                                    <span>{test.viewCount} visualizações</span>
+                                  </Link>
                                 ) : null
                               )}
                             </div>
