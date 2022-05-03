@@ -71,6 +71,23 @@ async function getTeachersDisciplines(token) {
   return teachersDisciplines;
 }
 
+function registerTest(
+  token,
+  testName,
+  urlPdf,
+  categorySelected,
+  teacherDisciplineSelected
+) {
+  const config = createConfig(token);
+  const body = {
+    name: testName,
+    pdfUrl: urlPdf,
+    categoryId: parseInt(categorySelected),
+    teacherDisciplineId: parseInt(teacherDisciplineSelected),
+  };
+  return axios.post(`${BASE_URL}/test`, body, config);
+}
+
 export {
   registerUser,
   loginUser,
@@ -80,4 +97,5 @@ export {
   updateViewCountTest,
   getDisciplines,
   getTeachersDisciplines,
+  registerTest,
 };
