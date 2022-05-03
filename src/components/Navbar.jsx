@@ -15,9 +15,7 @@ import useAuth from "../hooks/useAuth";
 
 const CGrLogout = chakra(GrLogout);
 
-export default function Navbar() {
-  const [search, setSearch] = useState("");
-
+export default function Navbar({ search, setSearch }) {
   const { logout } = useAuth();
 
   const handleChangeSearch = (event) => setSearch(event.target.value);
@@ -36,8 +34,8 @@ export default function Navbar() {
     page = "disciplines";
   } else if (location.pathname.includes("teachers")) {
     page = "teachers";
-  } else {
-    navigate("/");
+  } else if (location.pathname.includes("add-test")) {
+    page = "add-test";
   }
 
   return (
@@ -70,6 +68,7 @@ export default function Navbar() {
           onClick={() => handleLogout()}
         />
       </Flex>
+
       <Flex align="center" marginTop="50px" marginBottom="25px">
         <Input
           type="text"
@@ -78,14 +77,18 @@ export default function Navbar() {
               ? "Pesquise por disciplina"
               : page === "teachers"
               ? "Pesquise por pessoa instrutora"
+              : page === "add-test"
+              ? null
               : null
           }
           value={search}
           onChange={handleChangeSearch}
           width="464px"
           backgroundColor="white"
+          isDisabled={page === "add-test" ? true : false}
         />
       </Flex>
+
       <Divider
         orientation="horizontal"
         borderWidth={1}
@@ -100,7 +103,10 @@ export default function Navbar() {
           border="2px"
           borderColor="#3182ce"
           backgroundColor={page === "disciplines" ? null : "white"}
-          onClick={() => navigate("/home/disciplines")}
+          onClick={() => {
+            navigate("/home/disciplines");
+            setSearch("");
+          }}
         >
           Disciplinas
         </Button>
@@ -112,18 +118,25 @@ export default function Navbar() {
           border="2px"
           borderColor="#3182ce"
           backgroundColor={page === "teachers" ? null : "white"}
-          onClick={() => navigate("/home/teachers")}
+          onClick={() => {
+            navigate("/home/teachers");
+            setSearch("");
+          }}
         >
           Pessoa Instrutora
         </Button>
         <Spacer />
         <Button
           borderRadius="0.375rem"
-          color="#3182ce"
-          variant="outline"
+          variant={page === "add-test" ? "solid" : "outline"}
+          colorScheme="blue"
           border="2px"
           borderColor="#3182ce"
-          backgroundColor="white"
+          backgroundColor={page === "add-test" ? null : "white"}
+          onClick={() => {
+            navigate("/home/add-test");
+            setSearch("");
+          }}
         >
           Adicionar
         </Button>

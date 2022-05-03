@@ -13,6 +13,7 @@ export default function Pages() {
         <Route path="/" element={<Login />} />
         <Route path="/home/disciplines" element={<Home />} />
         <Route path="/home/teachers" element={<Home />} />
+        <Route path="/home/add-test" element={<Home />} />
       </Routes>
     </ChakraProvider>
   );

@@ -14,7 +14,13 @@ import {
   FormControl,
   InputRightElement,
 } from "@chakra-ui/react";
-import { FaUserAlt, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
+import {
+  FaUserAlt,
+  FaLock,
+  FaEye,
+  FaEyeSlash,
+  ChevronDownIcon,
+} from "react-icons/fa";
 import Swal from "sweetalert2";
 import Header from "../../components/Header";
 import { loginUser } from "../../services/api";
