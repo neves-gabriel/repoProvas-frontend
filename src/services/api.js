@@ -54,6 +54,13 @@ async function updateViewCountTest(token, id) {
   axios.put(`${BASE_URL}/test/${id}`, config);
 }
 
+async function getDisciplines(token) {
+  const config = createConfig(token);
+
+  const disciplines = await axios.get(`${BASE_URL}/disciplines`, config);
+  return disciplines;
+}
+
 export {
   registerUser,
   loginUser,
@@ -61,4 +68,5 @@ export {
   getTeachers,
   getCategories,
   updateViewCountTest,
+  getDisciplines,
 };
