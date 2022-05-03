@@ -61,6 +61,16 @@ async function getDisciplines(token) {
   return disciplines;
 }
 
+async function getTeachersDisciplines(token) {
+  const config = createConfig(token);
+
+  const teachersDisciplines = await axios.get(
+    `${BASE_URL}/teachersdisciplines`,
+    config
+  );
+  return teachersDisciplines;
+}
+
 export {
   registerUser,
   loginUser,
@@ -69,4 +79,5 @@ export {
   getCategories,
   updateViewCountTest,
   getDisciplines,
+  getTeachersDisciplines,
 };
